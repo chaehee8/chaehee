@@ -32,230 +32,222 @@
     <style>
         /* 기본 선택 영역 색상 변경 */
         ::selection {
-            background-color: #171717; /* neutral-900 */
+            background-color: #000000;
             color: #ffffff;
         }
-        /* 커스텀 페이드인 애니메이션 */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .animate-fade-in {
-            animation: fadeIn 0.2s ease-in-out;
-        }
         
-        /* 스크롤 시 헤더 텍스트 색상 전환용 클래스 */
-        .header-scrolled .nav-text {
-            color: #171717 !important; /* text-neutral-900 */
+        /* 부드러운 등장 애니메이션 */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .header-scrolled .nav-text:hover {
-            color: #737373 !important; /* text-neutral-500 */
+        .animate-fade-up {
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        @media (min-width: 768px) {
-            .header-top .nav-text {
-                color: #171717; /* PC에서는 최상단에서도 기본적으로 검은색 유지 가능, 혹은 흰색. 여기서는 히어로 이미지가 배경이므로 흰색 */
-            }
+
+        /* 텍스트 밑줄 애니메이션 (ULAB 스타일) */
+        .hover-line {
+            position: relative;
+            display: inline-block;
+        }
+        .hover-line::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .hover-line:hover::after {
+            width: 100%;
+        }
+
+        /* 방명록 스크롤바 커스텀 */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #000000;
+        }
+
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
     </style>
 </head>
-<body class="min-h-screen bg-neutral-50 text-neutral-900 font-sans">
+<body class="min-h-screen bg-white text-black font-sans selection:bg-black selection:text-white">
 
     <!-- Navigation -->
-    <header id="header" class="fixed w-full top-0 z-50 transition-all duration-300 bg-transparent py-6">
-        <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
-            <a href="#home" id="logo" class="text-xl font-bold tracking-tighter text-white md:text-white transition-colors nav-text" style="color: white;">
+    <header class="fixed w-full top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100 py-4 md:py-6 transition-all">
+        <div class="max-w-[1600px] mx-auto px-6 md:px-12 flex justify-between items-center">
+            <a href="#home" class="text-xl md:text-2xl font-semibold tracking-tighter text-black">
                 STUDIO.A
             </a>
 
             <!-- Desktop Nav -->
-            <nav class="hidden md:flex space-x-8">
-                <a href="#home" class="nav-text text-white text-sm uppercase tracking-widest hover:text-neutral-300 transition-colors">Home</a>
-                <a href="#projects" class="nav-text text-white text-sm uppercase tracking-widest hover:text-neutral-300 transition-colors">Projects</a>
-                <a href="#about" class="nav-text text-white text-sm uppercase tracking-widest hover:text-neutral-300 transition-colors">About</a>
-                <a href="#contact" class="nav-text text-white text-sm uppercase tracking-widest hover:text-neutral-300 transition-colors">Contact</a>
+            <nav class="hidden md:flex space-x-10">
+                <a href="#works" class="text-xs uppercase tracking-[0.2em] font-medium text-black hover-line">Works</a>
+                <a href="#about" class="text-xs uppercase tracking-[0.2em] font-medium text-black hover-line">About</a>
+                <a href="#guestbook" class="text-xs uppercase tracking-[0.2em] font-medium text-black hover-line">Guestbook</a>
+                <a href="#contact" class="text-xs uppercase tracking-[0.2em] font-medium text-black hover-line">Contact</a>
             </nav>
 
             <!-- Mobile Menu Button -->
-            <button id="mobile-menu-btn" class="md:hidden z-50 nav-text text-white">
+            <button id="mobile-menu-btn" class="md:hidden z-50 text-black">
                 <i data-lucide="menu" id="menu-icon"></i>
             </button>
         </div>
     </header>
 
     <!-- Mobile Menu Overlay -->
-    <div id="mobile-menu" class="hidden fixed inset-0 bg-white z-40 flex-col justify-center items-center space-y-8 animate-fade-in">
-        <a href="#home" class="mobile-nav-link text-2xl font-light uppercase tracking-widest text-neutral-900 hover:text-neutral-500 transition-colors">Home</a>
-        <a href="#projects" class="mobile-nav-link text-2xl font-light uppercase tracking-widest text-neutral-900 hover:text-neutral-500 transition-colors">Projects</a>
-        <a href="#about" class="mobile-nav-link text-2xl font-light uppercase tracking-widest text-neutral-900 hover:text-neutral-500 transition-colors">About</a>
-        <a href="#contact" class="mobile-nav-link text-2xl font-light uppercase tracking-widest text-neutral-900 hover:text-neutral-500 transition-colors">Contact</a>
+    <div id="mobile-menu" class="hidden fixed inset-0 bg-white z-40 flex-col justify-center items-center space-y-10">
+        <a href="#works" class="mobile-nav-link text-3xl font-light uppercase tracking-widest text-black hover-line">Works</a>
+        <a href="#about" class="mobile-nav-link text-3xl font-light uppercase tracking-widest text-black hover-line">About</a>
+        <a href="#guestbook" class="mobile-nav-link text-3xl font-light uppercase tracking-widest text-black hover-line">Guestbook</a>
+        <a href="#contact" class="mobile-nav-link text-3xl font-light uppercase tracking-widest text-black hover-line">Contact</a>
     </div>
 
     <!-- Hero Section -->
-    <section id="home" class="relative h-screen flex items-center justify-center">
-        <div class="absolute inset-0 w-full h-full">
-            <img 
-                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
-                alt="Hero Architecture" 
-                class="w-full h-full object-cover"
-            />
-            <div class="absolute inset-0 bg-black/40"></div>
-        </div>
-        <div class="relative z-10 text-center px-6 text-white w-full max-w-4xl mx-auto mt-20">
-            <h1 class="text-4xl md:text-7xl font-light tracking-tight mb-6">
-                공간에 숨결을 불어넣다
+    <section id="home" class="pt-32 pb-20 md:pt-48 md:pb-32 px-6 md:px-12 max-w-[1600px] mx-auto min-h-[80vh] flex flex-col justify-between">
+        <div class="max-w-5xl animate-fade-up">
+            <h1 class="text-5xl md:text-[7rem] leading-tight md:leading-none font-medium tracking-tighter mb-8 uppercase">
+                Design<br/>Studio A.
             </h1>
-            <p class="text-lg md:text-xl font-light tracking-wide text-neutral-200 mb-10 max-w-2xl mx-auto leading-relaxed">
-                건축은 사람과 공간이 만나는 접점입니다. 형태의 아름다움뿐만 아니라, 
-                그곳에 머무는 사람들의 삶을 담아내는 그릇으로서의 건축을 추구합니다.
+            <p class="text-lg md:text-2xl font-light tracking-wide text-gray-600 max-w-2xl leading-relaxed">
+                We define the space. <br class="hidden md:block"/>
+                단순함 속에 본질을 담는 건축과 공간을 제안합니다.
             </p>
-            <a href="#projects" class="inline-block border border-white text-white px-8 py-3 text-sm uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300">
-                View Projects
-            </a>
+        </div>
+        
+        <div class="w-full mt-20 animate-fade-up" style="animation-delay: 0.2s;">
+            <div class="aspect-[21/9] w-full overflow-hidden bg-gray-100">
+                <img 
+                    src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
+                    alt="Hero Architecture" 
+                    class="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-1000 transform hover:scale-105"
+                />
+            </div>
         </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16">
-            <div>
-                <h2 class="text-3xl md:text-5xl font-light tracking-tight mb-4 text-neutral-900">Selected Works</h2>
-                <p class="text-neutral-500">2022 - 2024</p>
-            </div>
+    <!-- Works Section -->
+    <section id="works" class="py-24 md:py-40 px-6 md:px-12 max-w-[1600px] mx-auto border-t border-gray-200">
+        <div class="flex flex-col md:flex-row justify-between items-start mb-20 md:mb-32">
+            <h2 class="text-4xl md:text-5xl font-medium tracking-tighter uppercase">Works.</h2>
+            <p class="text-sm tracking-widest uppercase text-gray-500 mt-4 md:mt-0">Selected Projects 22-24</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-24 md:gap-y-32">
             <!-- Project 1 -->
             <div class="group cursor-pointer">
-                <div class="relative overflow-hidden mb-6 bg-neutral-200 aspect-[4/3]">
+                <div class="relative overflow-hidden mb-6 bg-gray-100 aspect-[4/5]">
                     <img 
                         src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000&auto=format&fit=crop" 
                         alt="빛의 미술관"
-                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop'"
+                        class="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
                     />
-                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500"></div>
                 </div>
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-xs text-neutral-500 uppercase tracking-widest mb-2">Cultural / Architecture • 2024</p>
-                        <h3 class="text-xl md:text-2xl font-light text-neutral-900 mb-3 group-hover:text-neutral-600 transition-colors">빛의 미술관 (Museum of Light)</h3>
-                        <p class="text-sm text-neutral-600 line-clamp-2 max-w-md">자연 채광을 극대화하여 시간의 흐름에 따라 내부 공간의 느낌이 변화하는 전시 공간 설계.</p>
-                    </div>
-                    <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-4 group-hover:translate-x-0">
-                        <i data-lucide="external-link" class="text-neutral-400 w-5 h-5"></i>
-                    </div>
+                <div>
+                    <h3 class="text-2xl font-medium text-black mb-2">Museum of Light</h3>
+                    <p class="text-xs text-gray-500 uppercase tracking-widest mb-4">Architecture / 2024</p>
+                    <p class="text-sm text-gray-600 font-light leading-relaxed">자연 채광을 극대화하여 시간의 흐름에 따라 내부 공간의 느낌이 변화하는 전시 공간 설계.</p>
                 </div>
             </div>
 
-            <!-- Project 2 -->
-            <div class="group cursor-pointer md:mt-24">
-                <div class="relative overflow-hidden mb-6 bg-neutral-200 aspect-[4/3]">
+            <!-- Project 2 (Offset) -->
+            <div class="group cursor-pointer md:mt-40">
+                <div class="relative overflow-hidden mb-6 bg-gray-100 aspect-[4/5]">
                     <img 
                         src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1000&auto=format&fit=crop" 
                         alt="도심 속 오아시스"
-                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop'"
+                        class="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
                     />
-                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500"></div>
                 </div>
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-xs text-neutral-500 uppercase tracking-widest mb-2">Residential • 2023</p>
-                        <h3 class="text-xl md:text-2xl font-light text-neutral-900 mb-3 group-hover:text-neutral-600 transition-colors">도심 속 오아시스 (Urban Oasis)</h3>
-                        <p class="text-sm text-neutral-600 line-clamp-2 max-w-md">고밀도 도심 환경 속에서 거주자의 프라이버시를 보호하며 자연을 품을 수 있는 중정형 단독주택.</p>
-                    </div>
-                    <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-4 group-hover:translate-x-0">
-                        <i data-lucide="external-link" class="text-neutral-400 w-5 h-5"></i>
-                    </div>
+                <div>
+                    <h3 class="text-2xl font-medium text-black mb-2">Urban Oasis</h3>
+                    <p class="text-xs text-gray-500 uppercase tracking-widest mb-4">Residential / 2023</p>
+                    <p class="text-sm text-gray-600 font-light leading-relaxed">고밀도 도심 환경 속에서 거주자의 프라이버시를 보호하며 자연을 품을 수 있는 중정형 단독주택.</p>
                 </div>
             </div>
 
             <!-- Project 3 -->
             <div class="group cursor-pointer">
-                <div class="relative overflow-hidden mb-6 bg-neutral-200 aspect-[4/3]">
+                <div class="relative overflow-hidden mb-6 bg-gray-100 aspect-[4/5]">
                     <img 
                         src="https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=1000&auto=format&fit=crop" 
-                        alt="자연과 동화된 파빌리온"
-                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop'"
+                        alt="Nature Pavilion"
+                        class="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
                     />
-                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500"></div>
                 </div>
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-xs text-neutral-500 uppercase tracking-widest mb-2">Public Space • 2023</p>
-                        <h3 class="text-xl md:text-2xl font-light text-neutral-900 mb-3 group-hover:text-neutral-600 transition-colors">자연과 동화된 파빌리온</h3>
-                        <p class="text-sm text-neutral-600 line-clamp-2 max-w-md">주변 경관을 해치지 않고 땅의 지형에 순응하며 낮게 깔린 형태의 휴식용 파빌리온.</p>
-                    </div>
-                    <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-4 group-hover:translate-x-0">
-                        <i data-lucide="external-link" class="text-neutral-400 w-5 h-5"></i>
-                    </div>
+                <div>
+                    <h3 class="text-2xl font-medium text-black mb-2">Nature Pavilion</h3>
+                    <p class="text-xs text-gray-500 uppercase tracking-widest mb-4">Public Space / 2023</p>
+                    <p class="text-sm text-gray-600 font-light leading-relaxed">주변 경관을 해치지 않고 땅의 지형에 순응하며 낮게 깔린 형태의 휴식용 파빌리온.</p>
                 </div>
             </div>
 
-            <!-- Project 4 -->
-            <div class="group cursor-pointer md:mt-24">
-                <div class="relative overflow-hidden mb-6 bg-neutral-200 aspect-[4/3]">
+            <!-- Project 4 (Offset) -->
+            <div class="group cursor-pointer md:mt-40">
+                <div class="relative overflow-hidden mb-6 bg-gray-100 aspect-[4/5]">
                     <img 
                         src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=1000&auto=format&fit=crop" 
-                        alt="수변 문화 센터"
-                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        onerror="this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop'"
+                        alt="Waterfront Center"
+                        class="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
                     />
-                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500"></div>
                 </div>
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-xs text-neutral-500 uppercase tracking-widest mb-2">Commercial • 2022</p>
-                        <h3 class="text-xl md:text-2xl font-light text-neutral-900 mb-3 group-hover:text-neutral-600 transition-colors">수변 문화 센터 (Waterfront Center)</h3>
-                        <p class="text-sm text-neutral-600 line-clamp-2 max-w-md">물이라는 대지의 특성을 파사드 디자인에 반영한 복합 문화 상업 시설.</p>
-                    </div>
-                    <div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-4 group-hover:translate-x-0">
-                        <i data-lucide="external-link" class="text-neutral-400 w-5 h-5"></i>
-                    </div>
+                <div>
+                    <h3 class="text-2xl font-medium text-black mb-2">Waterfront Center</h3>
+                    <p class="text-xs text-gray-500 uppercase tracking-widest mb-4">Commercial / 2022</p>
+                    <p class="text-sm text-gray-600 font-light leading-relaxed">물이라는 대지의 특성을 파사드 디자인에 반영한 복합 문화 상업 시설.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="bg-white py-24 md:py-32 px-6 md:px-12">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 items-center">
-            <div class="w-full md:w-5/12">
-                <img 
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop" 
-                    alt="Architect Portrait" 
-                    class="w-full aspect-[3/4] object-cover grayscale hover:grayscale-0 transition-all duration-700"
-                />
+    <section id="about" class="py-24 md:py-40 px-6 md:px-12 bg-[#0a0a0a] text-white">
+        <div class="max-w-[1600px] mx-auto flex flex-col md:flex-row justify-between items-start gap-16">
+            <div class="w-full md:w-1/3">
+                <h2 class="text-4xl md:text-5xl font-medium tracking-tighter uppercase mb-12">About.</h2>
+                <div class="aspect-[3/4] w-full overflow-hidden bg-gray-900">
+                    <img 
+                        src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop" 
+                        alt="Architect" 
+                        class="w-full h-full object-cover filter grayscale"
+                    />
+                </div>
             </div>
-            <div class="w-full md:w-7/12">
-                <h2 class="text-3xl md:text-5xl font-light tracking-tight mb-8 text-neutral-900">
-                    김건축 <span class="text-xl md:text-2xl text-neutral-400 ml-2">Geonchuk Kim</span>
-                </h2>
-                <h3 class="text-lg uppercase tracking-widest text-neutral-500 mb-8">Architectural Designer</h3>
+            
+            <div class="w-full md:w-1/2 md:pt-24">
+                <h3 class="text-3xl font-medium mb-2 tracking-tighter">Geonchuk Kim</h3>
+                <p class="text-xs text-gray-400 uppercase tracking-widest mb-12">Principal Architect</p>
                 
-                <div class="space-y-6 text-neutral-600 font-light leading-relaxed mb-12 text-lg">
-                    <p>"건축은 단순히 건물을 짓는 행위를 넘어, 인간의 삶을 조직하고 자연과의 관계를 재설정하는 과정입니다."</p>
-                    <p>서울을 기반으로 활동하는 건축 디자이너로서, 지속 가능한 재료와 빛을 활용하여 공간에 생명력을 불어넣는 작업에 집중하고 있습니다. 사용자의 경험을 최우선으로 고려하며, 주변 맥락(Context)과 조화롭게 어우러지는 디자인을 제안합니다.</p>
+                <div class="space-y-8 text-gray-300 font-light leading-relaxed text-lg mb-16">
+                    <p>"건축은 덜어냄의 미학입니다. 불필요한 장식을 배제하고 공간의 본질과 쓰임에 집중합니다."</p>
+                    <p>스튜디오 A는 서울을 기반으로 활동하며, 재료의 물성과 빛, 그리고 그림자가 만들어내는 공간의 깊이를 탐구합니다. 우리는 트렌드를 쫓기보다 시간이 흘러도 변하지 않는 가치를 지닌 공간을 설계합니다.</p>
                 </div>
 
-                <div class="grid grid-cols-2 gap-8 border-t border-neutral-200 pt-12">
+                <div class="grid grid-cols-2 gap-12 border-t border-gray-800 pt-12">
                     <div>
-                        <h4 class="text-sm uppercase tracking-widest font-semibold mb-4 text-neutral-900">Expertise</h4>
-                        <ul class="space-y-2 text-neutral-600 font-light">
-                            <li>Architectural Design</li>
+                        <h4 class="text-xs uppercase tracking-widest text-gray-500 mb-6">Expertise</h4>
+                        <ul class="space-y-3 text-gray-300 font-light text-sm">
+                            <li>Architecture Design</li>
                             <li>Interior Architecture</li>
-                            <li>Urban Planning</li>
-                            <li>3D Visualization</li>
+                            <li>Space Branding</li>
                         </ul>
                     </div>
                     <div>
-                        <h4 class="text-sm uppercase tracking-widest font-semibold mb-4 text-neutral-900">Software</h4>
-                        <ul class="space-y-2 text-neutral-600 font-light">
-                            <li>AutoCAD / Revit</li>
-                            <li>Rhino / SketchUp</li>
-                            <li>Lumion / V-Ray</li>
-                            <li>Adobe Creative Suite</li>
+                        <h4 class="text-xs uppercase tracking-widest text-gray-500 mb-6">Contact</h4>
+                        <ul class="space-y-3 text-gray-300 font-light text-sm">
+                            <li>hello@studio-a.com</li>
+                            <li>+82 2 1234 5678</li>
+                            <li>Seoul, South Korea</li>
                         </ul>
                     </div>
                 </div>
@@ -263,128 +255,121 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-24 md:py-32 px-6 md:px-12 bg-neutral-900 text-white">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
-                <div>
-                    <h2 class="text-4xl md:text-6xl font-light tracking-tight mb-6">
-                        Let's Build<br />Something<br />Together.
-                    </h2>
-                    <p class="text-neutral-400 font-light max-w-md mb-12">
-                        새로운 프로젝트 문의나 협업 제안을 환영합니다. 아래 연락처를 통해 언제든 편하게 연락 주시기 바랍니다.
-                    </p>
-                    
-                    <div class="space-y-6">
-                        <a href="mailto:hello@studio-a.com" class="flex items-center space-x-4 text-neutral-300 hover:text-white transition-colors group">
-                            <div class="w-12 h-12 rounded-full border border-neutral-700 flex items-center justify-center group-hover:border-white transition-colors">
-                                <i data-lucide="mail" class="w-4 h-4"></i>
+    <!-- Guestbook Section -->
+    <section id="guestbook" class="py-24 md:py-40 px-6 md:px-12 max-w-[1600px] mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-start mb-16">
+            <h2 class="text-4xl md:text-5xl font-medium tracking-tighter uppercase">Guestbook.</h2>
+            <p class="text-sm tracking-widest uppercase text-gray-500 mt-4 md:mt-0" id="message-count">2 Messages</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-24">
+            <!-- Form -->
+            <div class="md:col-span-5">
+                <p class="text-gray-600 font-light mb-12 leading-relaxed text-sm">
+                    저희 작업에 대한 소중한 의견이나 인사를 남겨주세요.
+                </p>
+                <form id="guestbook-form" class="space-y-8">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            id="gb-name" 
+                            required 
+                            class="w-full bg-transparent border-b border-black py-4 text-black focus:outline-none placeholder-gray-300 font-light text-lg transition-colors peer" 
+                            placeholder="Name" 
+                        />
+                    </div>
+                    <div class="relative">
+                        <textarea 
+                            id="gb-message" 
+                            required 
+                            rows="4" 
+                            class="w-full bg-transparent border-b border-black py-4 text-black focus:outline-none placeholder-gray-300 font-light text-lg transition-colors resize-none peer" 
+                            placeholder="Message"
+                        ></textarea>
+                    </div>
+                    <button 
+                        type="submit" 
+                        class="group flex items-center space-x-4 text-sm uppercase tracking-widest font-medium text-black hover:text-gray-500 transition-colors pt-4"
+                    >
+                        <span class="hover-line">Submit</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-2 transition-transform"></i>
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Messages List -->
+            <div class="md:col-span-7">
+                <div class="h-[600px] flex flex-col">
+                    <div class="flex-1 overflow-y-auto pr-8 custom-scrollbar space-y-0 divide-y divide-gray-200 border-t border-b border-gray-200" id="guestbook-entries">
+                        <!-- Default Entries -->
+                        <div class="py-10 animate-fade-up">
+                            <div class="flex justify-between items-baseline mb-6">
+                                <span class="font-medium text-lg text-black">미래건축학도</span>
+                                <span class="text-xs uppercase tracking-widest text-gray-400">2026. 06. 09</span>
                             </div>
-                            <span class="font-light tracking-wide">hello@studio-a.com</span>
-                        </a>
-                        <div class="flex items-center space-x-4 text-neutral-300">
-                            <div class="w-12 h-12 rounded-full border border-neutral-700 flex items-center justify-center">
-                                <i data-lucide="phone" class="w-4 h-4"></i>
-                            </div>
-                            <span class="font-light tracking-wide">+82 (0)10 1234 5678</span>
+                            <p class="text-gray-600 font-light text-base leading-relaxed">작품들이 너무 멋집니다! 특히 빛의 미술관 프로젝트가 인상 깊어요. 여백을 다루는 방식에 대해 많이 배우고 갑니다.</p>
                         </div>
-                        <div class="flex items-center space-x-4 text-neutral-300">
-                            <div class="w-12 h-12 rounded-full border border-neutral-700 flex items-center justify-center">
-                                <i data-lucide="map-pin" class="w-4 h-4"></i>
+                        <div class="py-10 animate-fade-up" style="animation-delay: 0.1s;">
+                            <div class="flex justify-between items-baseline mb-6">
+                                <span class="font-medium text-lg text-black">Design Studio B</span>
+                                <span class="text-xs uppercase tracking-widest text-gray-400">2026. 06. 08</span>
                             </div>
-                            <span class="font-light tracking-wide">서울특별시 강남구 테헤란로 123, 4층</span>
+                            <p class="text-gray-600 font-light text-base leading-relaxed">웹사이트 포트폴리오가 스튜디오의 철학을 잘 보여주네요. 굉장히 모던하고 깔끔합니다. 앞으로의 행보도 응원하겠습니다.</p>
                         </div>
                     </div>
-                </div>
-
-                <!-- Simple Contact Form -->
-                <div class="bg-neutral-800/50 p-8 md:p-12">
-                    <form class="space-y-6" onsubmit="event.preventDefault();">
-                        <div>
-                            <label class="block text-xs uppercase tracking-widest text-neutral-400 mb-2">Name</label>
-                            <input 
-                                type="text" 
-                                class="w-full bg-transparent border-b border-neutral-700 py-3 text-white focus:outline-none focus:border-white transition-colors font-light"
-                                placeholder="홍길동"
-                            />
-                        </div>
-                        <div>
-                            <label class="block text-xs uppercase tracking-widest text-neutral-400 mb-2">Email</label>
-                            <input 
-                                type="email" 
-                                class="w-full bg-transparent border-b border-neutral-700 py-3 text-white focus:outline-none focus:border-white transition-colors font-light"
-                                placeholder="email@example.com"
-                            />
-                        </div>
-                        <div>
-                            <label class="block text-xs uppercase tracking-widest text-neutral-400 mb-2">Message</label>
-                            <textarea 
-                                rows="4" 
-                                class="w-full bg-transparent border-b border-neutral-700 py-3 text-white focus:outline-none focus:border-white transition-colors font-light resize-none"
-                                placeholder="프로젝트 내용이나 문의사항을 적어주세요."
-                            ></textarea>
-                        </div>
-                        <button 
-                            type="submit"
-                            class="w-full bg-white text-black py-4 uppercase tracking-widest text-sm font-semibold hover:bg-neutral-200 transition-colors flex justify-center items-center group"
-                        >
-                            Send Message
-                            <i data-lucide="chevron-right" class="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform"></i>
-                        </button>
-                    </form>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-black py-8 px-6 md:px-12 border-t border-neutral-900 text-neutral-500 text-sm flex flex-col md:flex-row justify-between items-center">
-        <p>© 2024 STUDIO.A. All rights reserved.</p>
-        <div class="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" class="hover:text-white transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
-            <a href="#" class="hover:text-white transition-colors"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+    <!-- Contact / Footer -->
+    <footer id="contact" class="bg-black text-white py-24 md:py-32 px-6 md:px-12 border-t border-gray-900">
+        <div class="max-w-[1600px] mx-auto flex flex-col md:flex-row justify-between items-end gap-16">
+            <div>
+                <h2 class="text-5xl md:text-[6rem] font-medium tracking-tighter uppercase mb-8 leading-none">
+                    Say<br/>Hello.
+                </h2>
+                <a href="mailto:hello@studio-a.com" class="text-xl md:text-3xl font-light hover-line inline-block mb-4">
+                    hello@studio-a.com
+                </a>
+                <p class="text-gray-500 font-light text-sm tracking-widest uppercase mt-8">
+                    Seoul, Republic of Korea
+                </p>
+            </div>
+
+            <div class="flex flex-col items-start md:items-end w-full md:w-auto">
+                <div class="flex space-x-8 mb-16 md:mb-32">
+                    <a href="#" class="text-sm uppercase tracking-widest font-medium text-gray-400 hover:text-white transition-colors hover-line">Instagram</a>
+                    <a href="#" class="text-sm uppercase tracking-widest font-medium text-gray-400 hover:text-white transition-colors hover-line">LinkedIn</a>
+                    <a href="#" class="text-sm uppercase tracking-widest font-medium text-gray-400 hover:text-white transition-colors hover-line">Behance</a>
+                </div>
+                <p class="text-xs text-gray-600 tracking-widest uppercase">
+                    © 2026 Studio.A. All rights reserved.
+                </p>
+            </div>
         </div>
     </footer>
 
     <!-- Interactive Scripts -->
     <script>
-        // 1. Lucide 아이콘 초기화
+        // 1. Lucide Icon Init
         lucide.createIcons();
 
-        // 2. 스크롤 시 헤더 배경 변경 로직
-        const header = document.getElementById('header');
-        const logo = document.getElementById('logo');
-        const navTexts = document.querySelectorAll('.nav-text');
-
+        // 2. Header Scroll Effect (Minimalist)
+        const header = document.querySelector('header');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
-                // 헤더 배경 흰색으로
-                header.classList.add('bg-white/90', 'backdrop-blur-md', 'shadow-sm', 'py-4', 'header-scrolled');
-                header.classList.remove('bg-transparent', 'py-6');
-                
-                // 텍스트 색상 검은색으로 변경
-                navTexts.forEach(el => {
-                    if(!el.closest('#mobile-menu')) { // 모바일 메뉴 안의 텍스트는 제외
-                        el.style.color = '#171717'; 
-                    }
-                });
+                header.classList.add('shadow-sm');
+                header.classList.remove('py-6');
+                header.classList.add('py-4');
             } else {
-                // 헤더 배경 투명으로 원복
-                header.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-sm', 'py-4', 'header-scrolled');
-                header.classList.add('bg-transparent', 'py-6');
-                
-                // 텍스트 색상 흰색으로 원복 (모바일 메뉴가 열려있지 않을 때만)
-                if(mobileMenu.classList.contains('hidden')){
-                    navTexts.forEach(el => {
-                        if(!el.closest('#mobile-menu')) {
-                            el.style.color = 'white';
-                        }
-                    });
-                }
+                header.classList.remove('shadow-sm');
+                header.classList.remove('py-4');
+                header.classList.add('py-6');
             }
         });
 
-        // 3. 모바일 메뉴 토글 로직
+        // 3. Mobile Menu Toggle
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const menuIcon = document.getElementById('menu-icon');
@@ -397,41 +382,64 @@
             if (isMenuOpen) {
                 mobileMenu.classList.remove('hidden');
                 mobileMenu.classList.add('flex');
-                
-                // 아이콘 X로 변경
                 menuIcon.setAttribute('data-lucide', 'x');
-                lucide.createIcons();
-                
-                // 메뉴 열렸을 때 버튼 색상 검정색으로 고정
-                mobileMenuBtn.style.color = '#171717';
-                logo.style.color = '#171717'; 
-                logo.style.position = 'relative';
-                logo.style.zIndex = '50';
-
             } else {
                 mobileMenu.classList.add('hidden');
                 mobileMenu.classList.remove('flex');
-                
-                // 아이콘 햄버거 메뉴로 변경
                 menuIcon.setAttribute('data-lucide', 'menu');
-                lucide.createIcons();
-                
-                // 스크롤 상태에 따라 원래 색상으로 복구
-                if (window.scrollY <= 50) {
-                    mobileMenuBtn.style.color = 'white';
-                    logo.style.color = 'white';
-                }
             }
+            lucide.createIcons();
         }
 
         mobileMenuBtn.addEventListener('click', toggleMenu);
-
-        // 모바일 메뉴 링크 클릭 시 메뉴 닫기
         mobileNavLinks.forEach(link => {
             link.addEventListener('click', () => {
                 if(isMenuOpen) toggleMenu();
             });
         });
+
+        // 4. Guestbook Logic (Preserved and styled)
+        const guestbookForm = document.getElementById('guestbook-form');
+        const guestbookEntries = document.getElementById('guestbook-entries');
+        const messageCountLabel = document.getElementById('message-count');
+        let messageCount = 2; 
+
+        if (guestbookForm) {
+            guestbookForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const nameInput = document.getElementById('gb-name');
+                const msgInput = document.getElementById('gb-message');
+                
+                const name = nameInput.value.trim();
+                const msg = msgInput.value.trim();
+                
+                if (!name || !msg) return;
+
+                const date = new Date();
+                const dateStr = `${date.getFullYear()}. ${String(date.getMonth() + 1).padStart(2, '0')}. ${String(date.getDate()).padStart(2, '0')}`;
+
+                const safeName = name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                const safeMsg = msg.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br>");
+
+                const entryHtml = `
+                    <div class="py-10 animate-fade-up">
+                        <div class="flex justify-between items-baseline mb-6">
+                            <span class="font-medium text-lg text-black">${safeName}</span>
+                            <span class="text-xs uppercase tracking-widest text-gray-400">${dateStr}</span>
+                        </div>
+                        <p class="text-gray-600 font-light text-base leading-relaxed">${safeMsg}</p>
+                    </div>
+                `;
+
+                guestbookEntries.insertAdjacentHTML('afterbegin', entryHtml);
+                
+                messageCount++;
+                messageCountLabel.textContent = `${messageCount} Messages`;
+
+                nameInput.value = '';
+                msgInput.value = '';
+            });
+        }
     </script>
 </body>
 </html>
