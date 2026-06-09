@@ -1,0 +1,339 @@
+import React, { useState, useEffect } from 'react';
+import { Menu, X, MapPin, Mail, Phone, Instagram, Linkedin, ChevronRight, ExternalLink } from 'lucide-react';
+
+export default function App() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // 스크롤 이벤트 (네비게이션 바 배경색 변경)
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // 네비게이션 부드러운 스크롤
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMenuOpen(false);
+  };
+
+  const projects = [
+    {
+      id: 1,
+      title: "빛의 미술관 (Museum of Light)",
+      category: "Cultural / Architecture",
+      year: "2024",
+      location: "Seoul, KR",
+      image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000&auto=format&fit=crop",
+      description: "자연 채광을 극대화하여 시간의 흐름에 따라 내부 공간의 느낌이 변화하는 전시 공간 설계."
+    },
+    {
+      id: 2,
+      title: "도심 속 오아시스 (Urban Oasis)",
+      category: "Residential",
+      year: "2023",
+      location: "Busan, KR",
+      image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1000&auto=format&fit=crop",
+      description: "고밀도 도심 환경 속에서 거주자의 프라이버시를 보호하며 자연을 품을 수 있는 중정형 단독주택."
+    },
+    {
+      id: 3,
+      title: "자연과 동화된 파빌리온",
+      category: "Public Space",
+      year: "2023",
+      location: "Jeju, KR",
+      image: "https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=1000&auto=format&fit=crop",
+      description: "주변 경관을 해치지 않고 땅의 지형에 순응하며 낮게 깔린 형태의 휴식용 파빌리온."
+    },
+    {
+      id: 4,
+      title: "수변 문화 센터 (Waterfront Center)",
+      category: "Commercial",
+      year: "2022",
+      location: "Incheon, KR",
+      image: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=1000&auto=format&fit=crop",
+      description: "물이라는 대지의 특성을 파사드 디자인에 반영한 복합 문화 상업 시설."
+    }
+  ];
+
+  const navLinks = [
+    { name: 'Home', id: 'home' },
+    { name: 'Projects', id: 'projects' },
+    { name: 'About', id: 'about' },
+    { name: 'Contact', id: 'contact' },
+  ];
+
+  return (
+    <div className="min-h-screen bg-neutral-50 text-neutral-900 font-sans selection:bg-neutral-900 selection:text-white">
+      {/* Navigation */}
+      <header 
+        className={`fixed w-full top-0 z-50 transition-all duration-300 ${
+          scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-6'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
+          <button 
+            onClick={() => scrollToSection('home')}
+            className={`text-xl font-bold tracking-tighter ${scrolled ? 'text-neutral-900' : 'text-white md:text-neutral-900'}`}
+          >
+            STUDIO.A
+          </button>
+
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex space-x-8">
+            {navLinks.map((link) => (
+              <button
+                key={link.id}
+                onClick={() => scrollToSection(link.id)}
+                className={`text-sm uppercase tracking-widest hover:text-neutral-500 transition-colors ${
+                  scrolled ? 'text-neutral-900' : 'text-neutral-900'
+                }`}
+              >
+                {link.name}
+              </button>
+            ))}
+          </nav>
+
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden z-50"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? (
+              <X className={scrolled || isMenuOpen ? 'text-neutral-900' : 'text-white'} size={24} />
+            ) : (
+              <Menu className={scrolled ? 'text-neutral-900' : 'text-white'} size={24} />
+            )}
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 bg-white z-40 flex flex-col justify-center items-center space-y-8 animate-in fade-in duration-200">
+          {navLinks.map((link) => (
+            <button
+              key={link.id}
+              onClick={() => scrollToSection(link.id)}
+              className="text-2xl font-light uppercase tracking-widest text-neutral-900 hover:text-neutral-500 transition-colors"
+            >
+              {link.name}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Hero Section */}
+      <section id="home" className="relative h-screen flex items-center justify-center">
+        <div className="absolute inset-0 w-full h-full">
+          <img 
+            src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
+            alt="Hero Architecture" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/40"></div>
+        </div>
+        <div className="relative z-10 text-center px-6 text-white w-full max-w-4xl mx-auto mt-20">
+          <h1 className="text-4xl md:text-7xl font-light tracking-tight mb-6">
+            공간에 숨결을 불어넣다
+          </h1>
+          <p className="text-lg md:text-xl font-light tracking-wide text-neutral-200 mb-10 max-w-2xl mx-auto leading-relaxed">
+            건축은 사람과 공간이 만나는 접점입니다. 형태의 아름다움뿐만 아니라, 
+            그곳에 머무는 사람들의 삶을 담아내는 그릇으로서의 건축을 추구합니다.
+          </p>
+          <button 
+            onClick={() => scrollToSection('projects')}
+            className="border border-white text-white px-8 py-3 text-sm uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300"
+          >
+            View Projects
+          </button>
+        </div>
+      </section>
+
+      {/* Projects Section */}
+      <section id="projects" className="py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
+          <div>
+            <h2 className="text-3xl md:text-5xl font-light tracking-tight mb-4 text-neutral-900">Selected Works</h2>
+            <p className="text-neutral-500">2022 - 2024</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+          {projects.map((project, index) => (
+            <div 
+              key={project.id} 
+              className={`group cursor-pointer ${index % 2 === 1 ? 'md:mt-24' : ''}`}
+            >
+              <div className="relative overflow-hidden mb-6 bg-neutral-200 aspect-[4/3]">
+                <img 
+                  src={project.image} 
+                  alt={project.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  onError={(e) => {
+                    e.target.src = 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop';
+                  }}
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500"></div>
+              </div>
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-xs text-neutral-500 uppercase tracking-widest mb-2">
+                    {project.category} • {project.year}
+                  </p>
+                  <h3 className="text-xl md:text-2xl font-light text-neutral-900 mb-3 group-hover:text-neutral-600 transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-sm text-neutral-600 line-clamp-2 max-w-md">
+                    {project.description}
+                  </p>
+                </div>
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-4 group-hover:translate-x-0">
+                  <ExternalLink className="text-neutral-400" size={20} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="bg-white py-24 md:py-32 px-6 md:px-12">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 items-center">
+          <div className="w-full md:w-5/12">
+            <img 
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop" 
+              alt="Architect Portrait" 
+              className="w-full aspect-[3/4] object-cover grayscale hover:grayscale-0 transition-all duration-700"
+            />
+          </div>
+          <div className="w-full md:w-7/12">
+            <h2 className="text-3xl md:text-5xl font-light tracking-tight mb-8 text-neutral-900">
+              김건축 <span className="text-xl md:text-2xl text-neutral-400 ml-2">Geonchuk Kim</span>
+            </h2>
+            <h3 className="text-lg uppercase tracking-widest text-neutral-500 mb-8">Architectural Designer</h3>
+            
+            <div className="space-y-6 text-neutral-600 font-light leading-relaxed mb-12 text-lg">
+              <p>
+                "건축은 단순히 건물을 짓는 행위를 넘어, 인간의 삶을 조직하고 자연과의 관계를 재설정하는 과정입니다."
+              </p>
+              <p>
+                서울을 기반으로 활동하는 건축 디자이너로서, 지속 가능한 재료와 빛을 활용하여 공간에 생명력을 불어넣는 작업에 집중하고 있습니다. 사용자의 경험을 최우선으로 고려하며, 주변 맥락(Context)과 조화롭게 어우러지는 디자인을 제안합니다.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-8 border-t border-neutral-200 pt-12">
+              <div>
+                <h4 className="text-sm uppercase tracking-widest font-semibold mb-4 text-neutral-900">Expertise</h4>
+                <ul className="space-y-2 text-neutral-600 font-light">
+                  <li>Architectural Design</li>
+                  <li>Interior Architecture</li>
+                  <li>Urban Planning</li>
+                  <li>3D Visualization</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-sm uppercase tracking-widest font-semibold mb-4 text-neutral-900">Software</h4>
+                <ul className="space-y-2 text-neutral-600 font-light">
+                  <li>AutoCAD / Revit</li>
+                  <li>Rhino / SketchUp</li>
+                  <li>Lumion / V-Ray</li>
+                  <li>Adobe Creative Suite</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-24 md:py-32 px-6 md:px-12 bg-neutral-900 text-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+            <div>
+              <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6">
+                Let's Build<br />Something<br />Together.
+              </h2>
+              <p className="text-neutral-400 font-light max-w-md mb-12">
+                새로운 프로젝트 문의나 협업 제안을 환영합니다. 아래 연락처를 통해 언제든 편하게 연락 주시기 바랍니다.
+              </p>
+              
+              <div className="space-y-6">
+                <a href="mailto:hello@studio-a.com" className="flex items-center space-x-4 text-neutral-300 hover:text-white transition-colors group">
+                  <div className="w-12 h-12 rounded-full border border-neutral-700 flex items-center justify-center group-hover:border-white transition-colors">
+                    <Mail size={18} />
+                  </div>
+                  <span className="font-light tracking-wide">hello@studio-a.com</span>
+                </a>
+                <div className="flex items-center space-x-4 text-neutral-300">
+                  <div className="w-12 h-12 rounded-full border border-neutral-700 flex items-center justify-center">
+                    <Phone size={18} />
+                  </div>
+                  <span className="font-light tracking-wide">+82 (0)10 1234 5678</span>
+                </div>
+                <div className="flex items-center space-x-4 text-neutral-300">
+                  <div className="w-12 h-12 rounded-full border border-neutral-700 flex items-center justify-center">
+                    <MapPin size={18} />
+                  </div>
+                  <span className="font-light tracking-wide">서울특별시 강남구 테헤란로 123, 4층</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Simple Contact Form */}
+            <div className="bg-neutral-800/50 p-8 md:p-12">
+              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                <div>
+                  <label className="block text-xs uppercase tracking-widest text-neutral-400 mb-2">Name</label>
+                  <input 
+                    type="text" 
+                    className="w-full bg-transparent border-b border-neutral-700 py-3 text-white focus:outline-none focus:border-white transition-colors font-light"
+                    placeholder="홍길동"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs uppercase tracking-widest text-neutral-400 mb-2">Email</label>
+                  <input 
+                    type="email" 
+                    className="w-full bg-transparent border-b border-neutral-700 py-3 text-white focus:outline-none focus:border-white transition-colors font-light"
+                    placeholder="email@example.com"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs uppercase tracking-widest text-neutral-400 mb-2">Message</label>
+                  <textarea 
+                    rows="4" 
+                    className="w-full bg-transparent border-b border-neutral-700 py-3 text-white focus:outline-none focus:border-white transition-colors font-light resize-none"
+                    placeholder="프로젝트 내용이나 문의사항을 적어주세요."
+                  ></textarea>
+                </div>
+                <button 
+                  type="submit"
+                  className="w-full bg-white text-black py-4 uppercase tracking-widest text-sm font-semibold hover:bg-neutral-200 transition-colors flex justify-center items-center group"
+                >
+                  Send Message
+                  <ChevronRight className="ml-2 transform group-hover:translate-x-1 transition-transform" size={16} />
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-black py-8 px-6 md:px-12 border-t border-neutral-900 text-neutral-500 text-sm flex flex-col md:flex-row justify-between items-center">
+        <p>© 2024 STUDIO.A. All rights reserved.</p>
+        <div className="flex space-x-6 mt-4 md:mt-0">
+          <a href="#" className="hover:text-white transition-colors"><Instagram size={20} /></a>
+          <a href="#" className="hover:text-white transition-colors"><Linkedin size={20} /></a>
+        </div>
+      </footer>
+    </div>
+  );
+}
